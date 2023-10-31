@@ -1,0 +1,1 @@
+"C:\Program Files\Epic Games\UE_5.3\Engine\Build\BatchFiles\RunUAT.bat" BuildPlugin -plugin="%~dp0IOBuilderLiveLink.uplugin" -package="C:\Users\DellBear\Documents\Unreal Projects\LiveLinkTest\Plugins\IOBuilderLiveLink"

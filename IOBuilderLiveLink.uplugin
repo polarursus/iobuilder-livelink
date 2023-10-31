@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "IO Builder LiveLink",
+	"Description": "Enhanced LiveLink Source for receiving JSON over sockets",
+	"Category": "Animation",
+	"CreatedBy": "IO Builder",
+	"CreatedByURL": "https://iobuilder.app",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+    {
+      "Name": "IOBuilderLiveLink",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
