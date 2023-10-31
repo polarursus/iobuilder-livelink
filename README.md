@@ -15,7 +15,7 @@ Before you start, ensure that you have Visual Studio Community Edition installed
 
   - **Tip**: You can select your exact engine version on the Documentation page (top left corner).
 
-### Set Paths
+### Build the Plugin
 
 1. Edit `build.bat` and set the following paths:
 
@@ -28,6 +28,8 @@ Before you start, ensure that you have Visual Studio Community Edition installed
     PLUGIN_PATH=C:\PluginOutput
     ```
 
-### Run `build.bat`
+2. Run `build.bat`
 
 Execute the `build.bat` file. Allow some time for the Plugin to be built.
+
+> Note: You might need Administrator rights depending on the accessed paths
