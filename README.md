@@ -30,6 +30,6 @@ Before you start, ensure that you have Visual Studio Community Edition installed
 
 2. Run `build.bat`
 
-Execute the `build.bat` file. Allow some time for the Plugin to be built.
+    - Execute the `build.bat` file. Allow some time for the Plugin to be built.
 
-> Note: You might need Administrator rights depending on the accessed paths
+    - > Note: You might need Administrator rights depending on the accessed paths
