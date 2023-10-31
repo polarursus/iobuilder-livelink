@@ -7,10 +7,10 @@ Before you start, ensure that you have Visual Studio Community Edition installed
 
     > Note: You don't need to do the "Recommended Settings" part!
 
-  - **Unreal Engine 4**: 
+  - **Unreal Engine 4.27**: 
     [Official Documentation](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/VisualStudioSetup/)
 
-  - **Unreal Engine 5**: 
+  - **Unreal Engine 5.3**: 
     [Official Documentation](https://docs.unrealengine.com/5.3/en-US/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine/)
 
   - **Tip**: You can select your exact engine version on the Documentation page (top left corner).
