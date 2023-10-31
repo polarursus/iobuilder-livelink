@@ -1,6 +1,7 @@
 Installation
 
 1, Prerequisites - Before you start, ensure that you have Visual Studio Community Edition installed corresponding to your Unreal Engine Version:
+-
 
 Follow Unreal Engine Official Documentation about the Installation.
 
@@ -15,9 +16,10 @@ https://docs.unrealengine.com/5.3/en-US/setting-up-visual-studio-development-env
 You can select your exact engine version on the Documentation page (top left corner).
 
 2, Run build.bat:
+-
 
 Option 1:
----------
+-
 Edit build.bat and set Default Paths:
 
 DEFAULT_UE_PATH - Specify Unreal Engine's folder
@@ -28,7 +30,8 @@ DEFAULT_UE_PATH=C:\Program Files\Epic Games\UE_5.3
 DEFAULT_PLUGIN_PATH=C:\PluginOutput
 
 Option 2:
----------
+-
+
 Run build.bat with specified arguments
 
 Example:
