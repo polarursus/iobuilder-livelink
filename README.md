@@ -1,46 +1,35 @@
-Installation
+## Installation
 
-1, Prerequisites - Before you start, ensure that you have Visual Studio Community Edition installed corresponding to your Unreal Engine Version:
--
+### Prerequisites 
+Before you start, ensure that you have Visual Studio Community Edition installed corresponding to your Unreal Engine Version.
 
-Follow Unreal Engine Official Documentation about the Installation.
+- **Follow Unreal Engine Official Documentation about the Installation.** 
 
-You don't need to do the "Recommended Settings" part!
+    > Note: You don't need to do the "Recommended Settings" part!
 
-Unreal Engine 4
+  - **Unreal Engine 4.27**: 
+    [Official Documentation](https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/VisualStudioSetup/)
 
-https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/DevelopmentSetup/VisualStudioSetup/
+  - **Unreal Engine 5.3**: 
+    [Official Documentation](https://docs.unrealengine.com/5.3/en-US/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine/)
 
-Unreal Engine 5
+  - **Tip**: You can select your exact engine version on the Documentation page (top left corner).
 
-https://docs.unrealengine.com/5.3/en-US/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine/
+### Build the Plugin
 
-You can select your exact engine version on the Documentation page (top left corner).
+1. Edit `build.bat` and set the following paths:
 
-2, Run build.bat:
--
+    - `UE_PATH`: Specify Unreal Engine's folder.
+    - `OUTPUT_PATH`: Specify the Output folder, e.g., `[Your Unreal Project Path]\Plugins`.
 
-Option 1:
--
-Edit build.bat and set Default Paths:
+    **Example:**
+    ```
+    UE_PATH=C:\Program Files\Epic Games\UE_5.3
+    PLUGIN_PATH=C:\PluginOutput
+    ```
 
-DEFAULT_UE_PATH - Specify Unreal Engine's folder
+2. Run `build.bat`
 
-DEFAULT_PLUGIN_PATH - Specify the Output folder eg. [Your Unreal Project Path]\Plugins
+    - Execute the `build.bat` file. Allow some time for the Plugin to be built.
 
-Example:
-
-DEFAULT_UE_PATH=C:\Program Files\Epic Games\UE_5.3
-
-DEFAULT_PLUGIN_PATH=C:\PluginOutput
-
-Option 2:
--
-
-Run build.bat with specified arguments
-
-Example:
-
-build.bat "C:\PluginOutput" "C:\Program Files\Epic Games\UE_5.3"
-
-Depending on your system's security settings, you may need to provide administrator rights for the build process to proceed.
+    > Note: You might need Administrator rights depending on the accessed paths
