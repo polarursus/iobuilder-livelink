@@ -13,6 +13,10 @@ Before you start, ensure that you have Visual Studio Community Edition installed
   - **Unreal Engine 5.3**: 
     [Official Documentation](https://docs.unrealengine.com/5.3/en-US/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine/)
 
+  - **Unreal Engine 5.4**: 
+
+    [Official Documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/setting-up-visual-studio-development-environment-for-cplusplus-projects-in-unreal-engine?application_version=5.4)
+
   - **Tip**: You can select your exact engine version on the Documentation page (top left corner).
 
 ### Build the Plugin
