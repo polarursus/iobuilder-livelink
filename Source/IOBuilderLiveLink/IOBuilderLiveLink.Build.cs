@@ -13,6 +13,9 @@ public class IOBuilderLiveLink : ModuleRules
 			{
 				"Core",
 				"LiveLinkInterface",
+				"LiveLink",
+				"CameraCalibrationCore",
+				"LensComponent",
 				"Messaging",
 			});
 

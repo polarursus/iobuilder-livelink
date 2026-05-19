@@ -21,6 +21,9 @@
 #include "Roles/LiveLinkTransformRole.h"
 #include "Roles/LiveLinkTransformTypes.h"
 
+#include "LiveLinkIOBLensRole.h"
+#include "LiveLinkIOBLensTypes.h"
+
 //enable logging step 2
 DEFINE_LOG_CATEGORY(ModuleLog)
 
@@ -226,6 +229,41 @@ void FIOBuilderLiveLinkSource::HandleReceivedData(TSharedPtr<TArray<uint8>, ESPM
 					SubjectObject->TryGetBoolField(TEXT("prm"), isPerspective);
 					FrameData.ProjectionMode = isPerspective ? ELiveLinkCameraProjectionMode::Perspective : ELiveLinkCameraProjectionMode::Orthographic;													
 
+					Client->PushSubjectFrameData_AnyThread({ SourceGuid, SubjectName }, MoveTemp(FrameDataStruct));
+				}
+			}
+			else if (Role == "Lens"){
+				if (bCreateSubject){
+					UE_LOG(ModuleLog, Warning, TEXT("Creating IOBuilder Lens Subject"));
+					FLiveLinkStaticDataStruct StaticDataStruct = FLiveLinkStaticDataStruct(FLiveLinkIOBLensStaticData::StaticStruct());
+					FLiveLinkIOBLensStaticData& LensStatic = *StaticDataStruct.Cast<FLiveLinkIOBLensStaticData>();
+					
+					double n = 0.0;
+					if (SubjectObject->TryGetNumberField(TEXT("rx"), n)) LensStatic.ImageWidth  = (int32)n;
+					if (SubjectObject->TryGetNumberField(TEXT("ry"), n)) LensStatic.ImageHeight = (int32)n;
+					if (SubjectObject->TryGetNumberField(TEXT("sw"), n)) LensStatic.SensorWidthMM  = (float)n;
+					if (SubjectObject->TryGetNumberField(TEXT("sh"), n)) LensStatic.SensorHeightMM = (float)n;
+					FString Model;
+					if (SubjectObject->TryGetStringField(TEXT("model"), Model)) LensStatic.Model = Model;
+					
+					Client->PushSubjectStaticData_AnyThread({ SourceGuid, SubjectName }, ULiveLinkIOBLensRole::StaticClass(), MoveTemp(StaticDataStruct));
+					EncounteredSubjects.Add(SubjectName);
+				} else {
+					FLiveLinkFrameDataStruct FrameDataStruct = FLiveLinkFrameDataStruct(FLiveLinkIOBLensFrameData::StaticStruct());
+					FLiveLinkIOBLensFrameData& LensFrame = *FrameDataStruct.Cast<FLiveLinkIOBLensFrameData>();
+					
+					SubjectObject->TryGetNumberField(TEXT("k1"), LensFrame.K1);
+					SubjectObject->TryGetNumberField(TEXT("k2"), LensFrame.K2);
+					SubjectObject->TryGetNumberField(TEXT("k3"), LensFrame.K3);
+					SubjectObject->TryGetNumberField(TEXT("p1"), LensFrame.P1);
+					SubjectObject->TryGetNumberField(TEXT("p2"), LensFrame.P2);
+					SubjectObject->TryGetNumberField(TEXT("cx"), LensFrame.Cx);
+					SubjectObject->TryGetNumberField(TEXT("cy"), LensFrame.Cy);
+					SubjectObject->TryGetNumberField(TEXT("fl"), LensFrame.FocalLengthMM);
+					SubjectObject->TryGetNumberField(TEXT("fov"), LensFrame.Fov);
+					SubjectObject->TryGetNumberField(TEXT("fd"), LensFrame.FocusDistance);
+					SubjectObject->TryGetNumberField(TEXT("ap"), LensFrame.Aperture);
+					
 					Client->PushSubjectFrameData_AnyThread({ SourceGuid, SubjectName }, MoveTemp(FrameDataStruct));
 				}
 			}

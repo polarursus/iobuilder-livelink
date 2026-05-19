@@ -12,11 +12,22 @@
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"Installed": false,
+	"EngineVersion": "5.3.0",
 	"Modules": [
     {
       "Name": "IOBuilderLiveLink",
       "Type": "Runtime",
       "LoadingPhase": "Default"
+    }
+  ],
+	"Plugins": [
+    {
+      "Name": "LiveLink",
+      "Enabled": true
+    },
+    {
+      "Name": "CameraCalibration",
+      "Enabled": true
     }
   ]
 }

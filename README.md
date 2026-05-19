@@ -36,3 +36,27 @@ Before you start, ensure that you have Visual Studio Community Edition installed
     - Execute the `build.bat` file. Allow some time for the Plugin to be built.
 
     > Note: You might need Administrator rights depending on the accessed paths
+
+## Lens distortion (optional)
+
+The `LiveLink Camera` node in IO Builder can additionally stream a calibrated
+lens model (from the Lens Calibration node) alongside the camera tracking. It
+is **optional** — graphs without a lens connected behave exactly as before and
+older plugin builds simply ignore it.
+
+When lens data is present the source publishes a second LiveLink subject named
+`<Camera> Lens` using the **IOBuilder Lens** role (Brown-Conrady / "Spherical"
+distortion: `K1,K2,K3,P1,P2`, principal point `Cx,Cy`, focal length, FOV,
+focus, aperture, plus sensor/resolution when available).
+
+To apply it in Unreal (UE 5.3+, requires the **Camera Calibration** and
+**Live Link** engine plugins, which this plugin enables):
+
+1. Add a `Cine Camera Actor` and a **Lens Component** to it; set the Lens
+   Component's distortion model to **Spherical** (or assign a Lens File that
+   uses it).
+2. Add a **Live Link Component Controller**, set its subject to
+   `<Camera> Lens`; it picks the **IOBuilder Lens Controller**, which streams
+   the live distortion state into the Lens Component each frame.
+3. Keep the existing **Camera** subject bound for transform/FOV/focus as
+   before — the two subjects work together.
