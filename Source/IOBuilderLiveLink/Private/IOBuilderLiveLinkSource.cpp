@@ -181,13 +181,21 @@ void FIOBuilderLiveLinkSource::HandleReceivedData(TSharedPtr<TArray<uint8>, ESPM
 					FLiveLinkStaticDataStruct StaticDataStruct = FLiveLinkStaticDataStruct(FLiveLinkCameraStaticData::StaticStruct());
 					FLiveLinkCameraStaticData& CameraData = *StaticDataStruct.Cast<FLiveLinkCameraStaticData>();					
 
-					double d; bool b; 
-					CameraData.bIsAspectRatioSupported = SubjectObject->TryGetNumberField(TEXT("ar"), d);
-					CameraData.bIsFieldOfViewSupported = SubjectObject->TryGetNumberField(TEXT("fov"), d);
-					CameraData.bIsFocalLengthSupported = SubjectObject->TryGetNumberField(TEXT("fl"), d);						
-					CameraData.bIsProjectionModeSupported = SubjectObject->TryGetBoolField(TEXT("prm"), b);
-					CameraData.bIsApertureSupported = SubjectObject->TryGetNumberField(TEXT("ap"), d);
-					CameraData.bIsFocusDistanceSupported = SubjectObject->TryGetNumberField(TEXT("f"), d);
+					// Static data is pushed only once (on subject creation).
+					// These fields are optional per-frame (e.g. fov/fl/f only
+					// arrive once a lens is connected, possibly after the
+					// stream started), so advertise full support
+					// unconditionally - an absent key just means "no update
+					// this tick", the standard LiveLink contract. Deriving
+					// the flags from the first datagram would permanently
+					// disable FOV/focal/focus for streams that start without
+					// a lens.
+					CameraData.bIsAspectRatioSupported = true;
+					CameraData.bIsFieldOfViewSupported = true;
+					CameraData.bIsFocalLengthSupported = true;
+					CameraData.bIsProjectionModeSupported = true;
+					CameraData.bIsApertureSupported = true;
+					CameraData.bIsFocusDistanceSupported = true;
 					
 					//CameraData.FilmBackWidth = CameraStructure->filmBackWidth;
 					//CameraData.FilmBackHeight = CameraStructure->filmBackHeight;

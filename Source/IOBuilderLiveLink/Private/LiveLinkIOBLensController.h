@@ -15,7 +15,7 @@
  * before.
  */
 UCLASS()
-class ULiveLinkIOBLensController : public ULiveLinkControllerBase
+class IOBUILDERLIVELINK_API ULiveLinkIOBLensController : public ULiveLinkControllerBase
 {
 	GENERATED_BODY()
 
