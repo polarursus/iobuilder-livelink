@@ -9,7 +9,7 @@
 
 /**
  * Binds an "IOBuilder Lens" LiveLink subject to a ULensComponent and pushes
- * the live Brown-Conrady distortion + intrinsics into its distortion handler
+ * the live Brown-Conrady distortion + intrinsics into its distortion state
  * each tick, so the engine renders the calibrated lens distortion. Optional:
  * if no Lens subject is present nothing is created and the camera behaves as
  * before.
@@ -21,8 +21,13 @@ class IOBUILDERLIVELINK_API ULiveLinkIOBLensController : public ULiveLinkControl
 
 public:
 	//~ Begin ULiveLinkControllerBase interface
+	virtual void OnEvaluateRegistered() override;
 	virtual void Tick(float DeltaTime, const FLiveLinkSubjectFrameData& SubjectData) override;
 	virtual bool IsRoleSupported(const TSubclassOf<ULiveLinkRole>& RoleToSupport) override;
 	virtual TSubclassOf<UActorComponent> GetDesiredComponentClass() const override;
 	//~ End ULiveLinkControllerBase interface
+
+private:
+	// One-time setup performed on first valid tick (model + distortion source).
+	bool bSetupApplied = false;
 };

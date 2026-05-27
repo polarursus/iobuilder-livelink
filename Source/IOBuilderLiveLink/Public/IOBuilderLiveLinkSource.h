@@ -3,6 +3,7 @@
 #pragma once
 
 #include "ILiveLinkSource.h"
+#include "HAL/CriticalSection.h"
 #include "HAL/Runnable.h"
 #include "HAL/ThreadSafeBool.h"
 #include "IMessageContext.h"
@@ -25,7 +26,7 @@ public:
 	virtual ~FIOBuilderLiveLinkSource();
 
 	// Begin ILiveLinkSource Interface
-	
+
 	virtual void ReceiveClient(ILiveLinkClient* InClient, FGuid InSourceGuid) override;
 
 	virtual bool IsSourceStillValid() const override;
@@ -48,10 +49,15 @@ public:
 
 	// End FRunnable Interface
 
-	void HandleReceivedData(TSharedPtr<TArray<uint8>, ESPMode::ThreadSafe> ReceivedData);
-
 private:
 
+	// Parses a JSON datagram and pushes static/frame data for each subject.
+	// Runs on the receiver thread - LiveLink push APIs are AnyThread-safe.
+	void HandleReceivedData(ILiveLinkClient* InClient, const FGuid& InSourceGuid, const TArray<uint8>& ReceivedData);
+
+	// Protects Client / SourceGuid which are written on the game thread
+	// (ReceiveClient) and read on the receiver thread (Run).
+	mutable FCriticalSection ClientCS;
 	ILiveLinkClient* Client;
 
 	// Our identifier in LiveLink
@@ -83,7 +89,7 @@ private:
 	// Time to wait between attempted receives
 	FTimespan WaitTime;
 
-	// List of subjects we've already encountered
+	// List of subjects we've already encountered (receiver thread only)
 	TSet<FName> EncounteredSubjects;
 
 	// Buffer to receive socket data into

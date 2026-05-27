@@ -6,8 +6,15 @@
 #include "LiveLinkIOBLensTypes.h"
 
 #include "LensComponent.h"
-#include "LensDistortionModelHandlerBase.h"
 #include "LensData.h"
+#include "Models/SphericalLensModel.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogIOBLens, Log, All);
+
+void ULiveLinkIOBLensController::OnEvaluateRegistered()
+{
+	bSetupApplied = false;
+}
 
 void ULiveLinkIOBLensController::Tick(float DeltaTime, const FLiveLinkSubjectFrameData& SubjectData)
 {
@@ -26,13 +33,24 @@ void ULiveLinkIOBLensController::Tick(float DeltaTime, const FLiveLinkSubjectFra
 		return;
 	}
 
-	// The project supplies the distortion handler (a Spherical lens model on
-	// the Lens Component / Lens File). We only stream the live state into it;
-	// if none is set yet there is nothing to drive (camera still works).
-	ULensDistortionModelHandlerBase* Handler = LensComponent->GetLensDistortionHandler();
-	if (!Handler)
+	// First valid tick: make sure a Spherical handler exists and the
+	// component is in a mode that will pump our DistortionState into it.
+	// Only set what the user hasn't configured; don't override their choices.
+	if (!bSetupApplied)
 	{
-		return;
+		if (!LensComponent->GetLensModel())
+		{
+			LensComponent->SetLensModel(USphericalLensModel::StaticClass());
+		}
+		if (LensComponent->GetDistortionSource() == EDistortionSource::LensFile)
+		{
+			// LensFile mode would overwrite our state with file-evaluated
+			// values every tick, defeating the LiveLink path. Warn once.
+			UE_LOG(LogIOBLens, Warning,
+				TEXT("ULiveLinkIOBLensController: LensComponent DistortionSource is 'LensFile'; "
+					 "live distortion will be ignored. Set it to 'Live Link Lens Subject' or 'Manual'."));
+		}
+		bSetupApplied = true;
 	}
 
 	// Normalized focal length: prefer the calibrated sensor size; fall back
@@ -71,7 +89,12 @@ void ULiveLinkIOBLensController::Tick(float DeltaTime, const FLiveLinkSubjectFra
 	State.ImageCenter.PrincipalPoint =
 		FVector2D(0.5 + FrameData->Cx, 0.5 + FrameData->Cy);
 
-	Handler->SetDistortionState(State);
+	// Drive the LensComponent's own DistortionState member. Its TickComponent
+	// runs as a tick-prerequisite-dependent of the LiveLink controller, so it
+	// will pick up this value the same frame and pump it into the handler
+	// (and the displacement-map render). Writing the handler directly is
+	// pointless: LensComponent overwrites it with its own member every tick.
+	LensComponent->SetDistortionState(State);
 }
 
 bool ULiveLinkIOBLensController::IsRoleSupported(const TSubclassOf<ULiveLinkRole>& RoleToSupport)

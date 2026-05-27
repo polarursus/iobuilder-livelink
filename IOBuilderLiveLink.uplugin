@@ -28,6 +28,10 @@
     {
       "Name": "CameraCalibration",
       "Enabled": true
+    },
+    {
+      "Name": "LensComponent",
+      "Enabled": true
     }
   ]
 }
